@@ -22,6 +22,7 @@ const navItems = [
           { label: 'Baseball Boxes', href: '/products/baseball-boxes' },
           { label: 'Basketball Boxes', href: '/products/basketball-boxes' },
           { label: 'Football Boxes', href: '/products/football-boxes' },
+          { label: 'On Sale Sports', href: '/products/on-sale-sports' },
         ],
       },
       {
@@ -38,42 +39,34 @@ const navItems = [
     label: 'TCG',
     href: null,
     sections: [
-      {
+    {
         title: 'TCG SINGLES',
         links: [
-          { label: 'Pokemon Singles', href: '/products/pokemon-singles' },
-          { label: 'Magic The Gathering Singles', href: '/products/mtg-singles' },
-          { label: 'One Piece Singles', href: '/products/onepiece-singles' },
-          { label: 'Lorcana Singles', href: '/products/lorcana-singles' },
+        { label: 'Pokemon Singles', href: '/products/pokemon-singles' },
+        { label: 'Magic The Gathering Singles', href: '/products/mtg-singles' },
+        { label: 'One Piece Singles', href: '/products/onepiece-singles' },
+        { label: 'Lorcana Singles', href: '/products/lorcana-singles' },
         ],
-      },
-      {
-        title: 'TCG PACKS',
-        links: [
-          { label: 'Pokemon Packs', href: '/products/pokemon-packs' },
-          { label: 'Magic The Gathering Packs', href: '/products/mtg-packs' },
-          { label: 'One Piece Packs', href: '/products/onepiece-packs' },
-          { label: 'Lorcana Packs', href: '/products/lorcana-packs' },
-        ],
-      },
-      {
+    },
+    {
         title: 'TCG SEALED',
         links: [
-          { label: 'Pokemon Sealed', href: '/products/pokemon-sealed' },
-          { label: 'Magic The Gathering Sealed', href: '/products/mtg-sealed' },
-          { label: 'One Piece Sealed', href: '/products/onepiece-sealed' },
-          { label: 'Lorcana Sealed', href: '/products/lorcana-sealed' },
+        { label: 'Pokemon Sealed', href: '/products/pokemon-sealed' },
+        { label: 'Magic The Gathering Sealed', href: '/products/mtg-sealed' },
+        { label: 'One Piece Sealed', href: '/products/onepiece-sealed' },
+        { label: 'Lorcana Sealed', href: '/products/lorcana-sealed' },
+        { label: 'On Sale TCG', href: '/products/on-sale-tcg' },
         ],
-      },
-      {
+    },
+    {
         title: 'TCG SLABS',
         links: [
-          { label: 'Pokemon Slabs', href: '/products/pokemon-slabs' },
-          { label: 'Magic The Gathering Slabs', href: '/products/mtg-slabs' },
-          { label: 'One Piece Slabs', href: '/products/onepiece-slabs' },
-          { label: 'Lorcana Slabs', href: '/products/lorcana-slabs' },
+        { label: 'Pokemon Slabs', href: '/products/pokemon-slabs' },
+        { label: 'Magic The Gathering Slabs', href: '/products/mtg-slabs' },
+        { label: 'One Piece Slabs', href: '/products/onepiece-slabs' },
+        { label: 'Lorcana Slabs', href: '/products/lorcana-slabs' },
         ],
-      },
+    },
     ],
   },
   {
