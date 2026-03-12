@@ -13,6 +13,19 @@ function convertBigInt(obj) {
   );
 }
 
+async function getCategoryId(categoryName) {
+  const response = await client.catalog.list({
+    types: ["CATEGORY"],
+  });
+  const raw = convertBigInt(response);
+  const categories = raw.data || [];
+  const match = categories.find(
+    (cat) =>
+      cat.categoryData?.name?.toLowerCase() === categoryName.toLowerCase(),
+  );
+  return match ? match.id : null;
+}
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -26,11 +39,14 @@ export async function GET(request) {
     let items = raw.data || [];
 
     if (category) {
-      items = items.filter((item) =>
-        item.itemData?.categories?.some((cat) =>
-          cat.name?.toLowerCase().includes(category.toLowerCase()),
-        ),
-      );
+      const categoryId = await getCategoryId(category);
+      if (categoryId) {
+        items = items.filter((item) =>
+          item.itemData?.categories?.some((cat) => cat.id === categoryId),
+        );
+      } else {
+        items = [];
+      }
     }
 
     return Response.json({ items });

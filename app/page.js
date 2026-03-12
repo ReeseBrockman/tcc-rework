@@ -2,39 +2,59 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const placeholderProducts = [
-  { id: 1, name: "Product Name", price: "$0.00" },
-  { id: 2, name: "Product Name", price: "$0.00" },
-  { id: 3, name: "Product Name", price: "$0.00" },
-  { id: 4, name: "Product Name", price: "$0.00" },
-  { id: 5, name: "Product Name", price: "$0.00" },
-  { id: 6, name: "Product Name", price: "$0.00" },
-  { id: 7, name: "Product Name", price: "$0.00" },
-  { id: 8, name: "Product Name", price: "$0.00" },
-];
+import { useProducts } from "./hooks/useProducts";
 
 function ProductCard({ product }) {
   return (
-    <div className="min-w-[200px] bg-gray-900 border border-gray-800 hover:border-yellow-400 transition-colors p-4 rounded cursor-pointer">
-      <div className="bg-gray-800 h-48 mb-3 rounded"></div>
-      <p className="text-white text-sm font-medium">{product.name}</p>
-      <p className="text-yellow-400 text-sm font-bold mt-1">{product.price}</p>
+    <div className="w-48 flex-shrink-0 bg-gray-900 border border-gray-800 hover:border-yellow-400 transition-colors p-3 rounded cursor-pointer">
+      {product.imageUrl ? (
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          style={{ width: "100%", height: "160px", objectFit: "contain" }}
+          className="mb-3 rounded"
+        />
+      ) : (
+        <div className="bg-gray-800 h-40 mb-3 rounded"></div>
+      )}
+      <p className="text-white text-xs font-medium">{product.name}</p>
+      <p className="text-yellow-400 text-xs font-bold mt-1">{product.price}</p>
     </div>
   );
 }
 
-function ProductSlider({ title, products }) {
+function ProductSlider({ title, category }) {
+  const { products, loading, error } = useProducts(category);
+
   return (
     <section className="py-10 px-4 max-w-7xl mx-auto">
       <h2 className="text-white text-2xl font-bold mb-6 border-l-4 border-yellow-400 pl-4">
         {title}
       </h2>
-      <div className="flex gap-4 overflow-x-auto pb-4">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {loading && (
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="min-w-[200px] bg-gray-900 border border-gray-800 p-4 rounded animate-pulse"
+            >
+              <div className="bg-gray-800 h-48 mb-3 rounded"></div>
+              <div className="bg-gray-800 h-4 rounded mb-2"></div>
+              <div className="bg-gray-800 h-4 w-16 rounded"></div>
+            </div>
+          ))}
+        </div>
+      )}
+      {!loading && products.length === 0 && (
+        <p className="text-gray-500 text-sm">No products found.</p>
+      )}
+      {!loading && products.length > 0 && (
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -60,7 +80,10 @@ function GlitchBanner() {
   }, []);
 
   return (
-    <section className="relative w-full h-64 overflow-hidden bg-gray-900">
+    <section
+      className="relative w-full overflow-hidden bg-gray-900"
+      style={{ height: "286px" }}
+    >
       <div
         className={`w-full h-full ${glitching ? "glitch-effect" : ""}`}
         style={{
@@ -101,8 +124,11 @@ function GlitchBanner() {
   );
 }
 
-function JustArrived({ products }) {
+function JustArrived() {
+  const { products, loading } = useProducts();
   const [paused, setPaused] = useState(false);
+
+  if (loading) return null;
 
   return (
     <section className="py-10 bg-black border-t border-b border-yellow-400">
@@ -147,7 +173,6 @@ function InstagramSection() {
             Follow Us
           </a>
         </div>
-
         <div className="grid grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="bg-gray-800 aspect-square rounded"></div>
@@ -173,17 +198,17 @@ export default function Home() {
 
   const sportsSections = (
     <>
-      <ProductSlider title="Sports Cards" products={placeholderProducts} />
-      <ProductSlider title="Sports Boxes" products={placeholderProducts} />
-      <ProductSlider title="Sports On Sale" products={placeholderProducts} />
+      <ProductSlider title="Sports Cards" category="Sports" />
+      <ProductSlider title="Sports Boxes" category="Sports" />
+      <ProductSlider title="Sports On Sale" category="Sports" />
     </>
   );
 
   const tcgSections = (
     <>
-      <ProductSlider title="TCG Singles" products={placeholderProducts} />
-      <ProductSlider title="TCG Sealed" products={placeholderProducts} />
-      <ProductSlider title="TCG On Sale" products={placeholderProducts} />
+      <ProductSlider title="TCG Singles" category="TCG" />
+      <ProductSlider title="TCG Sealed" category="TCG" />
+      <ProductSlider title="TCG On Sale" category="TCG" />
     </>
   );
 
@@ -227,7 +252,7 @@ export default function Home() {
 
       <GlitchBanner />
 
-      <JustArrived products={placeholderProducts} />
+      <JustArrived />
 
       {preference === "sports" ? (
         <>
