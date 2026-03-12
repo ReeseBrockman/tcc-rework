@@ -6,20 +6,24 @@ import { useProducts } from "./hooks/useProducts";
 
 function ProductCard({ product }) {
   return (
-    <div className="w-48 flex-shrink-0 bg-gray-900 border border-gray-800 hover:border-yellow-400 transition-colors p-3 rounded cursor-pointer">
-      {product.imageUrl ? (
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          style={{ width: "100%", height: "160px", objectFit: "contain" }}
-          className="mb-3 rounded"
-        />
-      ) : (
-        <div className="bg-gray-800 h-40 mb-3 rounded"></div>
-      )}
-      <p className="text-white text-xs font-medium">{product.name}</p>
-      <p className="text-yellow-400 text-xs font-bold mt-1">{product.price}</p>
-    </div>
+    <Link href={`/products/${product.id}`}>
+      <div className="w-48 flex-shrink-0 bg-gray-900 border border-gray-800 hover:border-yellow-400 transition-colors p-3 rounded cursor-pointer">
+        {product.imageUrl ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            style={{ width: "100%", height: "160px", objectFit: "contain" }}
+            className="mb-3 rounded"
+          />
+        ) : (
+          <div className="bg-gray-800 h-40 mb-3 rounded"></div>
+        )}
+        <p className="text-white text-xs font-medium">{product.name}</p>
+        <p className="text-yellow-400 text-xs font-bold mt-1">
+          {product.price}
+        </p>
+      </div>
+    </Link>
   );
 }
 
@@ -143,7 +147,7 @@ function JustArrived() {
         onMouseLeave={() => setPaused(false)}
       >
         <div
-          className={`flex gap-4 px-4 ${paused ? "" : "animate-marquee"}`}
+          className={`flex gap-4 px-4 animate-marquee ${paused ? "paused" : ""}`}
           style={{ width: "max-content" }}
         >
           {[...products, ...products].map((product, i) => (
