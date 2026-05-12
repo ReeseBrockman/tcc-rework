@@ -13,6 +13,8 @@ export default function ProductCard({ product }) {
             <img
               src={product.imageUrl}
               alt={product.name}
+              loading="lazy"
+              decoding="async"
               style={{ width: "100%", height: "180px", objectFit: "fill" }}
               className="rounded-t group-hover:scale-110 transition-transform duration-300"
             />

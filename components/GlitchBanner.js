@@ -5,15 +5,20 @@ import { useEffect, useState } from "react";
 export default function GlitchBanner({ section }) {
   const [current, setCurrent] = useState(0);
   const [glitching, setGlitching] = useState(false);
+  const [tearPosition, setTearPosition] = useState(50);
 
-  const banners = [
-    `/banners/${section}-1.png`,
-    `/banners/${section}-2.png`,
-    `/banners/${section}-3.png`,
-  ];
+  const bannerMap = {
+    sports: ["/banners/sports-banner-1.webp"],
+    tcg: ["/banners/tcg-1.webp", "/banners/tcg-2.webp", "/banners/tcg-3.webp"],
+  };
+  const banners = bannerMap[section] || [];
+  const activeBanner = banners[current] || banners[0];
 
   useEffect(() => {
+    if (banners.length <= 1) return;
+
     const interval = setInterval(() => {
+      setTearPosition(30 + Math.random() * 40);
       setGlitching(true);
       setTimeout(() => {
         setCurrent((prev) => (prev + 1) % banners.length);
@@ -21,7 +26,9 @@ export default function GlitchBanner({ section }) {
       }, 400);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [banners.length]);
+
+  if (!activeBanner) return null;
 
   return (
     <section
@@ -31,7 +38,7 @@ export default function GlitchBanner({ section }) {
       {/* Base image */}
       <div
         style={{
-          backgroundImage: `url(${banners[current]})`,
+          backgroundImage: `url(${activeBanner})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           width: "100%",
@@ -56,7 +63,7 @@ export default function GlitchBanner({ section }) {
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `url(${banners[current]})`,
+              backgroundImage: `url(${activeBanner})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               transform: "translate(-3px, 0)",
@@ -70,7 +77,7 @@ export default function GlitchBanner({ section }) {
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `url(${banners[current]})`,
+              backgroundImage: `url(${activeBanner})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               transform: "translate(3px, 0)",
@@ -85,7 +92,7 @@ export default function GlitchBanner({ section }) {
             className="absolute w-full"
             style={{
               height: "4px",
-              top: `${30 + Math.random() * 40}%`,
+              top: `${tearPosition}%`,
               background: "rgba(255,255,255,0.15)",
               transform: "translateX(-8px)",
               zIndex: 4,

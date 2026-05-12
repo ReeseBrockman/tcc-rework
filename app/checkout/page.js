@@ -4,14 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
   const router = useRouter();
   const [card, setCard] = useState(null);
-  const [payments, setPayments] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [squareReady, setSquareReady] = useState(false);
   const cardRef = useRef(null);
   const initialized = useRef(false);
 
@@ -37,14 +38,13 @@ export default function CheckoutPage() {
     let cardInstance = null;
 
     async function initSquare() {
-      if (!window.Square || initialized.current) return;
+      if (!squareReady || !window.Square || initialized.current) return;
       initialized.current = true;
 
       const paymentsInstance = window.Square.payments(
         process.env.NEXT_PUBLIC_SQUARE_APP_ID,
         "sandbox",
       );
-      setPayments(paymentsInstance);
 
       cardInstance = await paymentsInstance.card();
       await cardInstance.attach("#card-container");
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
         initialized.current = false;
       }
     };
-  }, []);
+  }, [squareReady]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -106,6 +106,11 @@ export default function CheckoutPage() {
 
   return (
     <div className="bg-black min-h-screen py-12 px-4">
+      <Script
+        src="https://sandbox.web.squarecdn.com/v1/square.js"
+        strategy="afterInteractive"
+        onLoad={() => setSquareReady(true)}
+      />
       <div className="max-w-5xl mx-auto">
         <h1 className="text-white text-3xl font-bold mb-8">Checkout</h1>
 
@@ -231,6 +236,8 @@ export default function CheckoutPage() {
                     <img
                       src={item.imageUrl}
                       alt={item.name}
+                      loading="lazy"
+                      decoding="async"
                       style={{
                         width: "48px",
                         height: "48px",

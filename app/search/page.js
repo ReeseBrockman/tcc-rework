@@ -12,6 +12,8 @@ function SearchProductCard({ product }) {
           <img
             src={product.imageUrl}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             style={{ width: "100%", height: "200px", objectFit: "contain" }}
             className="mb-3 rounded"
           />

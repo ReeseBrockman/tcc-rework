@@ -218,6 +218,8 @@ export default function Navbar() {
             <img
               src="/logo.svg"
               alt="The Collectors Corner"
+              fetchPriority="high"
+              decoding="async"
               className="h-10 w-auto"
             />
           </Link>
@@ -286,6 +288,8 @@ export default function Navbar() {
               <img
                 src="/gift-card.svg"
                 alt="Gift Card"
+                loading="lazy"
+                decoding="async"
                 className="h-8 w-auto"
               />
             </Link>
@@ -500,6 +504,8 @@ export default function Navbar() {
                 <img
                   src="/gift-card.svg"
                   alt="Gift Card"
+                  loading="lazy"
+                  decoding="async"
                   className="h-8 w-auto"
                 />
               </Link>

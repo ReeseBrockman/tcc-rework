@@ -2,7 +2,6 @@
 
 import { useCart } from "../context/CartContext";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } =
@@ -38,6 +37,8 @@ export default function CartPage() {
                 <img
                   src={item.imageUrl}
                   alt={item.name}
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     width: "80px",
                     height: "80px",

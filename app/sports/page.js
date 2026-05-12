@@ -9,8 +9,8 @@ import ProductCard from "@/components/ProductCard";
 
 const bannerSlides = [
   {
-    image: "/sports-banner-1.png",
-    mobileImage: "/sports-banner-1-mobile.png",
+    image: "/sports-banner-1.webp",
+    mobileImage: "/sports-banner-1-mobile.webp",
     title: "Prizm Season Is Here",
     subtitle: "Grab Your Boxes While They Last!",
     buttonText: "Shop Now",
@@ -20,8 +20,8 @@ const bannerSlides = [
     buttonBg: "bg-red-800 hover:bg-white text-white hover:text-black",
   },
   {
-    image: "/sports-banner-2.png",
-    mobileImage: "/sports-banner-2-mobile.png",
+    image: "/sports-banner-2.webp",
+    mobileImage: "/sports-banner-2-mobile.webp",
     title: "2026 Topps Baseball Series 1",
     subtitle: "Available Now — Shop Baseball",
     buttonText: "Shop Now",
@@ -41,12 +41,24 @@ function BannerCarousel() {
   const dragStartX = useRef(null);
   const isDragging = useRef(false);
   const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(1);
 
   const slides = [
     bannerSlides[bannerSlides.length - 1],
     ...bannerSlides,
     bannerSlides[0],
   ];
+  const goNext = () => {
+    setTransitioning(true);
+    setDragOffset(0);
+    setCurrent((prev) => prev + 1);
+  };
+  const goPrev = () => {
+    setTransitioning(true);
+    setDragOffset(0);
+    setCurrent((prev) => prev - 1);
+  };
+
   const startAutoPlay = () => {
     clearInterval(autoTimer.current);
     autoTimer.current = setInterval(() => goNext(), 5000);
@@ -60,16 +72,18 @@ function BannerCarousel() {
     };
   }, []);
 
-  const goNext = () => {
-    setTransitioning(true);
-    setDragOffset(0);
-    setCurrent((prev) => prev + 1);
-  };
-  const goPrev = () => {
-    setTransitioning(true);
-    setDragOffset(0);
-    setCurrent((prev) => prev - 1);
-  };
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const updateWidth = () => setContainerWidth(node.offsetWidth || 1);
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (current === slides.length - 1) {
@@ -120,7 +134,6 @@ function BannerCarousel() {
     resumeTimer.current = setTimeout(() => startAutoPlay(), 1500);
   };
 
-  const containerWidth = containerRef.current?.offsetWidth || 1;
   const translateX = -(current * 100) + (dragOffset / containerWidth) * 100;
 
   return (
@@ -144,18 +157,18 @@ function BannerCarousel() {
       >
         {slides.map((slide, i) => (
           <div key={i} className="relative h-full flex-shrink-0 w-screen">
-            <img
-              src={slide.mobileImage}
-              alt={slide.title}
-              className="absolute inset-0 w-full h-full object-cover md:hidden"
-              draggable={false}
-            />
-            <img
-              src={slide.image}
-              alt={slide.title}
-              className="absolute inset-0 w-full h-full object-cover hidden md:block"
-              draggable={false}
-            />
+            <picture className="absolute inset-0 block">
+              <source media="(min-width: 768px)" srcSet={slide.image} />
+              <img
+                src={slide.mobileImage}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+                loading={i === 1 ? "eager" : "lazy"}
+                fetchPriority={i === 1 ? "high" : "auto"}
+                decoding={i === 1 ? "sync" : "async"}
+                draggable={false}
+              />
+            </picture>
             <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent z-10"></div>
             <div className="absolute inset-0 z-20 flex flex-col justify-center px-0 md:px-16">
               <h2
@@ -298,8 +311,8 @@ function SportsContent() {
 
   useEffect(() => {
     if (urlCategory && sports.some((s) => s.label === urlCategory))
-      setSelected(urlCategory);
-    else if (!urlCategory) setSelected("All");
+      queueMicrotask(() => setSelected(urlCategory));
+    else if (!urlCategory) queueMicrotask(() => setSelected("All"));
   }, [urlCategory]);
 
   const viewAllHref =

@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Script from "next/script";
 import { useProducts } from "./hooks/useProducts";
 import { pillClass } from "@/components/CategoryPills";
+import BackgroundVideo from "@/components/BackgroundVideo";
 import ProductCard from "@/components/ProductCard";
 
 function ProductSlider({ title, category, viewAllHref }) {
@@ -61,21 +64,23 @@ function ProductSlider({ title, category, viewAllHref }) {
   );
 }
 
-function OnSaleSlider({ title, category, viewAllHref, backgroundVideo }) {
+function OnSaleSlider({
+  title,
+  category,
+  viewAllHref,
+  backgroundVideo,
+  backgroundPoster,
+}) {
   const { products, loading } = useProducts(category);
   const visibleProducts = products.slice(0, 10);
 
   return (
     <section className="relative py-10 overflow-hidden">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
+      <BackgroundVideo
+        src={backgroundVideo}
+        poster={backgroundPoster}
         className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src={backgroundVideo} type="video/mp4" />
-      </video>
+      />
       <div className="absolute inset-0 bg-black/60 z-0"></div>
       <div className="relative z-10 px-4 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4">
@@ -175,6 +180,11 @@ function InstagramSection() {
           </a>
         </div>
         <behold-widget feed-id="1xH5TwqzAbDU0aCmjbXh"></behold-widget>
+        <Script
+          src="https://w.behold.so/widget.js"
+          type="module"
+          strategy="lazyOnload"
+        />
       </div>
     </section>
   );
@@ -278,6 +288,7 @@ function SportsSection() {
         category="Sports On Sale"
         viewAllHref="/sports"
         backgroundVideo="/sports-sale-banner.mp4"
+        backgroundPoster="/sports-sale-banner-poster.jpg"
       />
     </div>
   );
@@ -316,6 +327,7 @@ function TCGSection() {
         category="TCG On Sale"
         viewAllHref="/tcg"
         backgroundVideo="/tcg-sale-banner.mp4"
+        backgroundPoster="/tcg-sale-banner-poster.jpg"
       />
     </div>
   );
@@ -326,7 +338,7 @@ export default function Home() {
 
   useEffect(() => {
     const saved = localStorage.getItem("tcc-preference");
-    if (saved) setPreference(saved);
+    if (saved) queueMicrotask(() => setPreference(saved));
   }, []);
 
   const handlePreference = (pref) => {
@@ -342,18 +354,12 @@ export default function Home() {
           onClick={() => handlePreference("sports")}
           className="relative h-96 flex items-center justify-center overflow-hidden group rounded-lg"
         >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+          <BackgroundVideo
+            eager
+            src="/sports-hero.mp4"
+            poster="/sports-hero-poster.jpg"
             className="absolute inset-0 w-full h-full object-cover z-0"
-          >
-            <source
-              src="/sports-hero.mp4"
-              type="video/mp4"
-            />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent z-10"></div>
           <div className="relative z-20 text-center p-8">
             <h2 className="text-white text-2xl md:text-4xl font-bold mb-1">
@@ -372,18 +378,12 @@ export default function Home() {
           onClick={() => handlePreference("tcg")}
           className="relative h-96 flex items-center justify-center overflow-hidden group rounded-lg"
         >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+          <BackgroundVideo
+            eager
+            src="/tcg-hero.mp4"
+            poster="/tcg-hero-poster.jpg"
             className="absolute inset-0 w-full h-full object-cover z-0"
-          >
-            <source
-              src="/tcg-hero.mp4"
-              type="video/mp4"
-            />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-l from-black/10 to-transparent z-10"></div>
           <div className="relative z-20 text-center p-8">
             <h2 className="text-white text-2xl md:text-4xl font-bold mb-1">
@@ -411,14 +411,14 @@ export default function Home() {
         </>
       )}
       <InstagramSection />
-      <section
-        className="relative py-24 px-4 overflow-hidden"
-        style={{
-          backgroundImage: "url('/store-banner.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="relative py-24 px-4 overflow-hidden">
+        <Image
+          src="/store-banner.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent z-10"></div>
         <div className="relative z-20 max-w-7xl mx-auto">
           <h2 className="text-white text-4xl md:text-5xl font-bold mb-4 [text-shadow:2px_2px_4px_rgba(0,0,0,0.8)]">

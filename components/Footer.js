@@ -470,7 +470,13 @@ export default function Footer() {
                 key={icon.alt}
                 className="h-8 flex items-center justify-center"
               >
-                <img src={icon.src} alt={icon.alt} className="h-6 w-auto" />
+                <img
+                  src={icon.src}
+                  alt={icon.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-6 w-auto"
+                />
               </div>
             ))}
           </div>

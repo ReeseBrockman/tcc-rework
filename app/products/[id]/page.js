@@ -86,6 +86,8 @@ export default function ProductPage() {
                 <img
                   src={selectedImage}
                   alt={product.name}
+                  fetchPriority="high"
+                  decoding="async"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   className="rounded"
                 />
@@ -104,6 +106,8 @@ export default function ProductPage() {
                     <img
                       src={img}
                       alt={`${product.name} ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
                       style={{
                         width: "64px",
                         height: "64px",

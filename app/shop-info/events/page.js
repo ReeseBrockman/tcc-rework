@@ -1,5 +1,4 @@
 import { Calendar } from "lucide-react";
-import Image from "next/image";
 
 async function getEvents() {
   const res = await fetch(
@@ -66,6 +65,8 @@ export default async function EventsPage() {
                         <img
                           src={event.image}
                           alt={event.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover"
                         />
                       </div>
