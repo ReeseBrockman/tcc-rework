@@ -277,7 +277,7 @@ function SportsSection() {
         title="Sports On Sale"
         category="Sports On Sale"
         viewAllHref="/sports"
-        backgroundVideo="https://res.cloudinary.com/dwzjtoilj/video/upload/q_auto,f_auto/v1774045925/sports-sale-banner_bxu5h6.mp4"
+        backgroundVideo="/sports-sale-banner.mp4"
       />
     </div>
   );
@@ -315,7 +315,7 @@ function TCGSection() {
         title="TCG On Sale"
         category="TCG On Sale"
         viewAllHref="/tcg"
-        backgroundVideo="https://res.cloudinary.com/dwzjtoilj/video/upload/q_auto,f_auto/v1774045502/tcg-sale-banner_ofuq4t.mp4"
+        backgroundVideo="/tcg-sale-banner.mp4"
       />
     </div>
   );
@@ -350,7 +350,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover z-0"
           >
             <source
-              src="https://res.cloudinary.com/dwzjtoilj/video/upload/q_auto,f_auto/v1774045504/sports-hero_jdffum.mp4"
+              src="/sports-hero.mp4"
               type="video/mp4"
             />
           </video>
@@ -380,7 +380,7 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover z-0"
           >
             <source
-              src="https://res.cloudinary.com/dwzjtoilj/video/upload/q_auto,f_auto/v1774046019/tcg-hero_vf5cqq.mp4"
+              src="/tcg-hero.mp4"
               type="video/mp4"
             />
           </video>
